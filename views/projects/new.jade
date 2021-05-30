@@ -1,0 +1,22 @@
+extends ../layout
+
+block content
+	h1.
+		#{title}
+	form#formAddProject(name="addproject",method="post",action="/projects")
+		p Name: 
+			input#inputName(type="text", placeholder="ex. Init", name="name")
+		p Description:
+			input#inputDescription(type="text", placeholder="ex. IT fair", name="description")
+		p Price: 
+			input#inputPrice(type="number", name="price")
+		p Done:
+			input#inputDone(type="text", placeholder="ex. Software startup academy", name="done")
+		p Start:
+			input#inputStart(type="date", name="start")
+		p End:
+			input#inputEnd(type="date", name="end")
+		p Members: 
+			input#inputMembers(type="text", placeholder="ex. John, Jane", name="members")
+		p
+			button#btnSubmit(type="submit") submit
