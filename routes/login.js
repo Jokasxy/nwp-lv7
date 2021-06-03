@@ -11,10 +11,10 @@ exports.submit = function (req, res, next) {
     if (err) return next(err);
     if (user) {
       req.session.uid = user.id;
-      res.redirect('/');
+      res.redirect('/projects');
     } else {
       res.error('Invalid input!');
-      res.redirect('back');
+      res.redirect('/');
     }
   });
 };
