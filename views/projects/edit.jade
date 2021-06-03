@@ -4,22 +4,28 @@ block content
 	h1.
 		Project ID #{project._id}
 	form(action='/projects/#{project._id}/edit',method='post',name='updateproject',enctype='application/x-www-form-urlencoded')
-		p Name:
-			input#inputName(type='text', value='#{project.name}', name='name')
-		p Description:
-			input#inputDescription(type='text', value='#{project.description}', name='description')
-		p Price:
-			input#inputPrice(type='number', value='#{project.price}', name='price')
-		p Done:
-			input#inputDone(type='text', value='#{project.done}', name='done')
-		p Start:
-			input#inputStart(type='date', value='#{project.start}', name='start')
-		p End:
-			input#inputEnd(type='date', value='#{project.end}', name='end')
-		p Members: 
-			input#inputMembers(type='text', value='#{project.members}', name='members')
-		p
-			input(type='hidden',value='PUT',name='_method')
+		if (isOwner)
+			p Name:
+				input#inputName(type='text', value='#{project.name}', name='name')
+			p Description:
+				input#inputDescription(type='text', value='#{project.description}', name='description')
+			p Price:
+				input#inputPrice(type='number', value='#{project.price}', name='price')
+			p Done:
+				input#inputDone(type='text', value='#{project.done}', name='done')
+			p Start:
+				input#inputStart(type='date', value='#{project.start}', name='start')
+			p End:
+				input#inputEnd(type='date', value='#{project.end}', name='end')
+			p Members: 
+				select#inputMembers(value='#{project.members}', name='members', multiple=true)
+				each user in users
+					option(value=user._id, selected = user.isSelected)=user.username
+			p
+				input(type='hidden',value='PUT',name='_method')
+		else
+			p Done:
+				input#inputDone(type='text', value='#{project.done}', name='done')
 		p
 			button#btnSubmit(type='submit').
 				Update

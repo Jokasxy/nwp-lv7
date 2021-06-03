@@ -6,6 +6,8 @@ var projectsSchema = new mongoose.Schema({
   done: String,
   start: { type: Date, default: Date.now },
   end: { type: Date, default: Date.now },
-  members: String
+  members: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
+  archived: { type: Boolean, default: false }
 });
 mongoose.model('Project', projectsSchema);

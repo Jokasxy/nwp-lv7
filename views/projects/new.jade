@@ -17,6 +17,8 @@ block content
 		p End:
 			input#inputEnd(type="date", name="end")
 		p Members: 
-			input#inputMembers(type="text", placeholder="ex. John, Jane", name="members")
+			select#inputMembers(placeholder="ex. John, Jane", name="members", multiple=true)
+			each user in users
+                option(value=user._id)=user.username
 		p
-			button#btnSubmit(type="submit") submit
+			button#btnSubmit(type="submit") Submit

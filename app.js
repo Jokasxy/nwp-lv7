@@ -7,6 +7,8 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var projectsRouter = require('./routes/projects');
+var login = require('./routes/login');
+var register = require('./routes/register');
 
 var db = require('./model/db'),
     blob = require('./model/projects');
@@ -27,6 +29,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/projects', projectsRouter);
 app.use('/users', usersRouter);
+
+//Registration form
+app.get('/register', register.form);
+app.post('/register', register.submit);
+
+//Login form
+app.get('/login', login.form);
+app.post('/login', login.submit);
+
+//Logout
+app.get('/logout', login.logout);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

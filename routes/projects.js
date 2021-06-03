@@ -222,29 +222,75 @@ router.route('/:id/edit')
 	        if (err) {
 	            return console.error(err);
 	        } else {
-	            //remove it from Mongo
-	            project.remove(function (err, project) {
-	                if (err) {
-	                    return console.error(err);
-	                } else {
-	                    //Returning success messages saying it was deleted
-	                    console.log('DELETE removing ID: ' + project._id);
-	                    res.format({
-	                        //HTML returns us back to the main page, or you can create a success page
-	                          html: function(){
-	                               res.redirect("/projects");
-	                         },
-	                         //JSON returns the item with the message that is has been deleted
-	                        json: function(){
-	                               res.json({message : 'deleted',
-	                                   item : project
-	                               });
-	                         }
-	                      });
-	                }
-	            });
+                if (project.owner == req.session.uid) {
+                     //remove it from Mongo
+                    project.remove(function (err, project) {
+                        if (err) {
+                            return console.error(err);
+                        } else {
+                            //Returning success messages saying it was deleted
+                            console.log('DELETE removing ID: ' + project._id);
+                            res.format({
+                                //HTML returns us back to the main page, or you can create a success page
+                                html: function(){
+                                    res.redirect('/projects');
+                                },
+                                //JSON returns the item with the message that is has been deleted
+                                json: function(){
+                                    res.json({message : 'deleted',
+                                        item : project
+                                    });
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    res.format({
+                        //HTML returns us back to the main page, or you can create a success page
+                        html: function(){
+                            res.redirect('/projects');
+                        },
+                        //JSON returns the item with the message that is has been deleted
+                        json: function(){
+                            res.json({message : 'error',
+                                item : project
+                            });
+                        }
+                    });
+                }
 	        }
 	    });
 	});
+
+    router.get('/archive', function (req, res) {
+        var query = {
+          $or: [{ owner: req.session.uid }, { members: req.session.uid }],
+          archived: true,
+        };
+        Project.find(query, function (err, projects) {
+          if (err) {
+            return console.error(err);
+          } else {
+            projects.map(function (project) {
+              if (project.owner == req.session.uid) {
+                project.isOwner = true;
+              } else {
+                project.isOwner = false;
+              }
+            });
+            res.format({
+              html: function () {
+                res.render('projects/archive', {
+                  title: 'Archived projects',
+                  projects: projects,
+                });
+              },
+              json: function () {
+                res.json(projects);
+              },
+            });
+          }
+        });
+      });
 
 module.exports = router;

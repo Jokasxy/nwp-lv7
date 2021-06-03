@@ -1,0 +1,39 @@
+extends ../layout
+block content
+    h1= title
+    br
+
+    #wrapper
+        #projectList
+            table#projects.table.table-hover.table-striped.table-bordered
+                thead
+                    th Name
+                    th Description
+                    th Price
+                    th Done 
+                    th Start
+                    th End
+                    th Role
+                tbody
+                if (projects && projects.length > 0)
+                    each project in projects
+                        tr
+                        td= project.name
+                        td= project.description
+                        td= project.price
+                        td= project.done
+                        td= project.start.toDateString()
+                        td= project.end.toDateString()
+                        if(project.isOwner)
+                            td Leader
+                        else
+                            td Member
+                else
+                    tr
+                    td= "No projects"
+                    td
+                    td
+                    td
+                    td
+                    td
+                    td
